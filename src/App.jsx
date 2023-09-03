@@ -2,13 +2,14 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import {
-  CompanyDetails,
-  Dashboard,
-  EstimatedSalaries,
+  // CompanyDetails,
+  // EstimatedSalaries,
+  Overview,
   JobDetails,
   JobSearch,
 } from "./pages/index";
-import { Navbar, Footer } from "./components/index";
+
+import { Navbar, Footer, Error } from "./components/index";
 
 const App = () => {
   const Layout = () => {
@@ -28,23 +29,27 @@ const App = () => {
       children: [
         {
           path: "/",
-          element: <Dashboard />,
+          element: <Overview />,
         },
         {
           path: "/jobsearch",
           element: <JobSearch />,
         },
-        {
-          path: "/estimatedSalaries",
-          element: <EstimatedSalaries />,
-        },
+        // {
+        //   path: "/estimatedSalaries",
+        //   element: <EstimatedSalaries />,
+        // },
         {
           path: "/jobs/:id",
           element: <JobDetails />,
         },
+        // {
+        //   path: "/companies/:companyName",
+        //   element: <CompanyDetails />,
+        // },
         {
-          path: "/companies/:companyName",
-          element: <CompanyDetails />,
+          path: "*",
+          element: <Error />,
         },
       ],
     },
