@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       // Added more colors from Figma File
       colors: {
-        primary: "#0BAB7C",
+        primary: "#ab0b0b",
         secondary: "#F5F5F8",
         secondary_bg: "#F9FAFC",
         black_BG: "#13131A",
@@ -23,7 +23,7 @@ module.exports = {
         natural_color: "#44444F",
       },
       fontFamily: {
-        manrope: ["Manrope", "DM Sans"],
+        manrope: ["Manrope", "DM Sans", "sans-serif"],
       },
     },
     screens: {
