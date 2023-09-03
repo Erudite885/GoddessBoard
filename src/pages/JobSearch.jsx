@@ -1,86 +1,53 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useGetJobsQuery } from "../services/jobApi";
+import { Loader } from "../components";
 
-import { Error, Loader, JobCardSearchPage, SearchJobForm, JobsSortForm, SearchSideBarForm, Pagination, JobAlert } from '../components';
-import { useGetSearchQuery, useGetSearchFilterQuery } from '../redux/services/jobSearchApi';
-import { showToday, filterSalaryRange, sortJobsByCompanyName, sortJobsByDatePosted } from '../utils';
+const JobSearch = ({ simplified }) => {
+  // const count = simplified ? 4 : 10;
+  const { data: jobs, isFetching } = useGetJobsQuery();
+  const jobsList = jobs?.data;
 
-const JobSearch = () => {
-  const [page, setPage] = useState(1);
-  const [sortby, setSortby] = useState('date-posted-asc');
-  const { searchTerm, employmentTypesArray, jobRequirementArray, salaryBounds, categoriesArray } = useSelector((state) => state.currentSearch);
-  // sidebar search filter array
-  const categories = categoriesArray?.join();
-  const employmentTypes = employmentTypesArray?.join();
-  const jobRequirements = jobRequirementArray?.join();
-
-  // search keywords
-  const { data, error, isLoading } = useGetSearchQuery({ searchTerm, page, employmentTypes, jobRequirements, categories });
-  const jobs = data?.data;
-  // search filter
-  const { data: filterData, isLoading: isLoadingFilterData } = useGetSearchFilterQuery(searchTerm);
-  const today = showToday();
-  if (isLoading && isLoadingFilterData) return <Loader />;
-  if (error) return <Error />;
-
-  const employmentTypeData = filterData?.data?.employment_types;
-  const jobRequirementData = filterData?.data?.job_requirements;
-  const categoriesData = filterData?.data?.categories;
-
-  /* calculate the total job number based on employment type and pass to job search */
-  const reduceCount = employmentTypeData?.reduce((a, b) => ({ est_count: a.est_count + b.est_count }));
-  const totalCount = reduceCount.est_count;
-  const jobsFoundMessage = parseInt(totalCount, 10) > 0 ? `${totalCount} Jobs` : 'No Jobs Found';
-  const totalPages = Math.floor(totalCount / 10) + 1;
-
-  let displayData = salaryBounds.length ? filterSalaryRange(jobs, salaryBounds) : jobs;
-
-  if (jobs?.length) {
-    if (sortby === 'company') {
-      displayData = sortJobsByCompanyName({ jobs });
-    } else if (sortby === 'date-posted-asc') {
-      displayData = sortJobsByDatePosted({ jobs, ASC: true });
-    } else if (sortby === 'date-posted-desc') {
-      displayData = sortJobsByDatePosted({ jobs, ASC: false });
-    }
-  }
-
-  if (displayData?.length > 4) {
-    displayData = displayData.slice(0, 4);
-  }
+  if (isFetching) return <Loader />;
+  console.log(jobsList);
 
   return (
-    <div className="bg-secondary px-4 sm:px-20 dark:bg-black_BG">
-      <h1 className="text-2xl font-bold text-black_1 pt-12 dark:text-white">Let’s find your dream job</h1>
-      <h2 className=" text-natural py-1">{today}</h2>
-      <SearchJobForm />
-      <div className="sm:flex justify-between gap-5">
-        <div className="flex-col rounded-sm lg:min-w-max">
-          <JobAlert />
-          <div className="hidden sm:block">
-            <SearchSideBarForm employmentTypeData={employmentTypeData} jobRequirementData={jobRequirementData} categoriesData={categoriesData} />
-          </div>
+    <>
+      {!simplified && (
+        <div className="flex py-8 mx-auto ">
+          <input
+            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+            placeholder="Search Jobs"
+            className="w-[480px] py-4 rounded-md px-4 mx-auto outline-none "
+          />
         </div>
-        <div className="flex flex-col">
-          {/* Jobs header */}
-          <div className="flex justify-between items-center">
-            {/* Number of jobs found message  */}
-            <div className="text-sm my-2.5">
-              <p className="text-natural_3">Showing: <span className="text-black_1 font-bold dark:text-white">{jobsFoundMessage}</span></p>
-            </div>
-            {/* Sort */}
-            <JobsSortForm currentSortby={sortby} setSortby={setSortby} />
+      )}
+      {jobsList?.map((job) => (
+        <div key={job.job_id} className='border rounded-xl mx-4 py-4 px-4 mb-4 border-red-400 '>
+          <div className="flex items-center mb-2 gap-2">
+            <img
+              src={job.employer_logo}
+              alt={job.employer_name}
+              className="w-8 h-8 rounded-full"
+            />
+            <h2 className="font-semibold text-xs">{job.employer_name}</h2>
           </div>
-          <div>
-            {displayData?.map((job) => (
-              <JobCardSearchPage job={job} key={job.job_id} />
-            ))}
-          </div>
-          {/* Pagination */}
-          <Pagination className="mt-4 mb-8" currentPage={page} setPage={setPage} totalPages={totalPages} />
+          <h6 className="mb-2 text-slate-500 ">{job.job_publisher}</h6>
+          <p>
+            {job.job_description.length > 300
+              ? `${job.job_description.substring(0, 200)}...`
+              : `${job.job_description}`}{" "}
+          </p>
+          {/* <h2>Qualification</h2>
+          <ul>
+            <li>{job.job_highlights.Qualifications}</li>
+          </ul>
+          <h2>Responsibilities</h2>
+          <ul>
+            <li>{job.job_highlights.Responsibilities}</li>
+          </ul> */}
         </div>
-      </div>
-    </div>
+      ))}
+    </>
   );
 };
 
