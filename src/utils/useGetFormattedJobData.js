@@ -125,7 +125,7 @@ const formatData = (data) => ({
   description: formatDescription(data?.job_description),
   employmentType: formatEmploymentType(data?.job_employment_type),
   skills: formatSkills(data),
-  daysLeft: formatTime(data?.job_offer_expiration_datetime_utc),
+  daysLeft: formatTime(data?.job_posted_at_datetime_utc),
   salary: formatSalary(data),
   employerName: formatEmployerName(data?.employer_name),
   location: formatLocation(data),
