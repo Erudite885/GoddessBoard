@@ -1,5 +1,7 @@
-export { default as CompanyDetails } from "./CompanyDetails";
-export { default as Dashboard } from "./Dashboard";
-export { default as EstimatedSalaries } from "./EstimatedSalaries";
-export { default as JobDetails } from "./JobDetails";
-export { default as JobSearch } from "./JobSearch";
+import Overview from "./Overview";
+import EstimatedSalaries from "./EstimatedSalaries";
+import JobSearch from "./JobSearch";
+import JobDetails from "./JobDetails";
+import CompanyDetails from "./CompanyDetails";
+
+export { Overview, EstimatedSalaries, JobSearch, JobDetails, CompanyDetails };
