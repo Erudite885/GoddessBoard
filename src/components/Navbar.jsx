@@ -11,10 +11,7 @@ const links = [
     href: "/",
     text: "Overview",
   },
-  {
-    href: "/estimatedSalaries",
-    text: "Estimated Salaries",
-  },
+  
   {
     href: "/jobSearch",
     text: "Job Search",
@@ -53,7 +50,7 @@ const NavBar = () => {
   }, [checked]);
 
   return (
-    <nav className="border-b-2 h-[70px] dark:border-black_3 w-full flex items-center bg-white dark:bg-black_BG dark:text-natural_3">
+    <nav className="border-b-2 py-10 lg:max-w-7xl mx-auto dark:border-black_3 w-full flex items-center bg-white dark:bg-black_BG dark:text-natural_3">
       <div className="flex items-center justify-between w-full h-full mx-6 ss:mx-20">
         <Link to="/" className="ss:flex hidden gap-[6px] items-center">
           <img src={logo} alt="jobit" className="w-[90px] h-[22px]" />
