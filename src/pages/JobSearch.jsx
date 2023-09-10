@@ -1,64 +1,100 @@
 import React, { useEffect, useState } from "react";
-import { useGetJobsQuery } from "../services/jobApi";
-import { Loader, Pagination } from "../components";
-// moment
-// import useGetFormattedJobData from "../utils/useGetFormattedJobData";
+import { useLazyGetJobSearchFiltersQuery } from "../services/jobApi";
+import { Loader } from "../components";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
-const JobSearch = ({ simplified, job }) => {
-  // const count = simplified ? 4 : 10;
-  const { data: jobs, isFetching } = useGetJobsQuery();
-  const jobsList = jobs?.data;
+const JobSearch = ({ simplified }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [getSearch, { data, isFetching }] = useLazyGetJobSearchFiltersQuery();
 
-  if (isFetching) return <Loader />;
-  console.log(jobsList);
+  const handleSearch = async (e) => {
+    e.preventDefault();
 
-  // const jobData = useGetFormattedJobData(job)
+    const { data } = await getSearch({
+      query: searchQuery,
+      datePosted: "today",
+      remote: "true",
+      requirements: "under_3_years_experience",
+    });
+  };
 
-  const specificTime = moment(jobsList.job_posted_at_datetime_utc); // Specific time to compare
-  const oneHourAgo = moment().subtract(1, "hour"); // Calculate the time 1 hour ago
+  const jobs = data?.data;
 
-  const color = specificTime.isAfter(oneHourAgo) ? "red" : "limegreen"; // Ternary expression to check if specific time is greater than 1 hour ago
+  const sortedJobs = jobs
+    ?.slice()
+    .sort((a, b) =>
+      moment(b.job_posted_at_datetime_utc).diff(
+        moment(a.job_posted_at_datetime_utc)
+      )
+    );
 
   return (
     <>
       {!simplified && (
-        <div className="flex py-10 mx-auto ">
-          <input
-            onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-            placeholder="Search Jobs"
-            className="w-[480px] py-4 rounded-md px-4 mx-auto outline-none "
-          />
+        <div className="flex py-10 items-center justify-center">
+          <form onSubmit={handleSearch}>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for Jobs..."
+              className="md:w-[480px] py-4 rounded-l-md px-4 mx-auto outline-none"
+            />
+            <button
+              className="bg-[#ab0b0b] text-white rounded-r-lg p-4"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
         </div>
       )}
-      <section className="flex flex-wrap lg:max-w-7xl mx-auto">
-        {jobsList?.map((job) => (
-          <div
-            key={job.job_id}
-            className="border rounded-xl w-[280px] mx-4 py-4 px-4 mb-4 border-red-400 "
-          >
-            <div className="flex max-w-xs items-center mb-2 gap-2">
-              <img
-                src={job.employer_logo}
-                alt={job.employer_name}
-                className="w-8 h-8 rounded-full"
-              />
-              <h2 className="font-semibold text-xs">{job.employer_name}</h2>
-            </div>
-            <h6 className="mb-2 text-slate-500 ">{job.job_publisher}</h6>
-            <p>
-              {job.job_description.length > 300
-                ? `${job.job_description.substring(0, 200)}...`
-                : `${job.job_description}`}{" "}
-            </p>
-            <p style={{ color }} className={`py-2 text-sm`}>
-              {moment(job.job_posted_at_datetime_utc).fromNow()}{" "}
-            </p>
-          </div>
-        ))}
-       
-      </section>
-      <Pagination />
+      <h2 className="items-center dark:text-white justify-center flex font-semibold text-xl">
+        Job Listings
+      </h2>
+      {isFetching ? (
+        <div>
+          <Loader />
+        </div>
+      ) : (
+        <section className="flex dark:text-white flex-wrap lg:max-w-7xl justify-center py-8">
+          {sortedJobs?.map((job) => {
+            const specificTime = moment(job.job_posted_at_datetime_utc);
+            const oneHourAgo = moment().subtract(1, "hour");
+            const color = specificTime.isAfter(oneHourAgo) ? "lime" : "red";
+
+            return (
+              <Link key={job.job_id} to={`/jobs/${job.job_id}`}>
+                <div
+                  key={job.job_id}
+                  className="border rounded-xl w-[280px] mx-4 py-4 px-4 mb-4 border-red-400 "
+                >
+                  <div className="flex max-w-xs items-center mb-2 gap-2">
+                    <img
+                      src={job.employer_logo}
+                      alt={job.employer_name}
+                      className="w-8 h-8 rounded-full"
+                    />
+                    <h2 className="font-semibold text-xs">
+                      {job.employer_name}
+                    </h2>
+                  </div>
+                  <h6 className="mb-2 text-slate-500">{job.job_publisher}</h6>
+                  <p>
+                    {job.job_description.length > 300
+                      ? `${job.job_description.substring(0, 200)}...`
+                      : `${job.job_description}`}
+                  </p>
+                  <p style={{ color }} className="py-2 text-sm">
+                    {moment(job.job_posted_at_datetime_utc).fromNow()}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
+        </section>
+      )}
     </>
   );
 };
