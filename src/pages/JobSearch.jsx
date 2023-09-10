@@ -3,6 +3,7 @@ import { useLazyGetJobSearchFiltersQuery } from "../services/jobApi";
 import { Loader } from "../components";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { gradLogo } from "../assets";
 
 const JobSearch = ({ simplified }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -72,7 +73,7 @@ const JobSearch = ({ simplified }) => {
                 >
                   <div className="flex max-w-xs items-center mb-2 gap-2">
                     <img
-                      src={job.employer_logo}
+                      src={job.employer_logo || gradLogo}
                       alt={job.employer_name}
                       className="w-8 h-8 rounded-full"
                     />

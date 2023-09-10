@@ -3,6 +3,7 @@ import { useGetJobDetailsQuery } from "../services/jobApi";
 import { Link, useParams } from "react-router-dom";
 import { Loader } from "../components";
 import moment from "moment";
+import { gradLogo } from "../assets";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -28,13 +29,12 @@ const JobDetails = () => {
         <Loader />
       </div>
     );
-  // console.log(details);
 
   return (
     <section className="dark:text-white p-16 mx-auto flex flex-col justify-center">
       <div className="flex items-center gap-4 mb-4">
         <img
-          src={details?.employer_logo}
+          src={details?.employer_logo || gradLogo}
           alt="employer logo"
           className="rounded-full w-20 h-20 object-cover"
         />

@@ -6,6 +6,8 @@ import Save from './Save.svg';
 import Unsave from './Unsave.svg';
 import MoreOptions from './MoreOptions.svg';
 import GoddessJobs from "./GoddessJobs.svg";
+import gradLogo from "./gradlogo.jpg";
+
 export {
   logo,
   loader,
@@ -14,5 +16,6 @@ export {
   Save,
   Unsave,
   MoreOptions,
-  GoddessJobs
+  GoddessJobs,
+  gradLogo
 };

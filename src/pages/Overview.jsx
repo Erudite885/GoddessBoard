@@ -3,6 +3,7 @@ import { useGetJobsQuery } from "../services/jobApi";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { Loader } from "../components";
+import { gradLogo } from "../assets";
 
 const Overview = () => {
   const { data, isFetching } = useGetJobsQuery(
@@ -12,7 +13,7 @@ const Overview = () => {
       remote: true,
     },
     {
-      pollingInterval: 30000,
+      pollingInterval: 3000,
     }
   );
 
@@ -52,7 +53,7 @@ const Overview = () => {
           >
             <div className="flex max-w-xs items-center mb-2 gap-2">
               <img
-                src={job.employer_logo}
+                src={job.employer_logo || gradLogo}
                 alt={job.employer_name}
                 className="w-8 h-8 rounded-full"
               />
