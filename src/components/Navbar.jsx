@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import ReactSwitch from "react-switch";
 
-import { logo } from "../assets";
-import { light, dark, hamBurger } from "../assets/icons";
+import { GoddessJobs, logo } from "../assets";
+import { light, dark, hamBurger, } from "../assets/icons";
+
 import "../styles/navBar.css";
 
 const links = [
@@ -53,10 +54,18 @@ const NavBar = () => {
     <nav className="border-b-2 py-10 lg:max-w-7xl mx-auto dark:border-black_3 w-full flex items-center bg-white dark:bg-black_BG dark:text-natural_3">
       <div className="flex items-center justify-between w-full h-full mx-6 ss:mx-20">
         <Link to="/" className="ss:flex hidden gap-[6px] items-center">
-          <img src={logo} alt="jobit" className="w-[90px] h-[22px]" />
+          <h1 className="font-bold cursor-pointer text-2xl bg-gradient-to-br from-[#ab0b0b] via-[#e10057] to-[#ab0b0b] text-transparent bg-clip-text">
+            {" "}
+            Goddess Jobs{" "}
+          </h1>{" "}
         </Link>
         <div className="ss:hidden">
-          <img src={hamBurger} alt="hamburger" className="w-6 h-6" />
+          <Link to="/">
+            <h1 className="font-bold cursor-pointer text-2xl bg-gradient-to-br from-[#ab0b0b] via-[#e10057] to-[#ab0b0b] text-transparent bg-clip-text">
+              {" "}
+              Goddess Jobs{" "}
+            </h1>
+          </Link>
         </div>
         <div className="hidden items-center gap-[30px] h-full ss:flex">
           {links.map((link, index) => (
