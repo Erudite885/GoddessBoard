@@ -55,7 +55,7 @@ const BarChartCard = (inputData) => {
             />
             <Bar
               dataKey="maxSalary"
-              fill="#0BAB7C"
+              fill="#ab0b0b"
               radius={[20, 20, 0, 0]}
               maxBarSize={10}
             />
