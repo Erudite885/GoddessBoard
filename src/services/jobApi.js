@@ -7,12 +7,6 @@ const jobApiHeaders = {
 
 const baseUrl = import.meta.env.VITE_JSEARCH_RAPIDAPI_BASEURL;
 
-const searchJob = "Frontend Developer";
-const datePosted = "today";
-const remote = true;
-const id = "ruV99Y5syPQAAAAAAAAAAA==";
-const jobLocation = "New-York, NY, USA";
-
 const createRequest = (url) => ({ url, headers: jobApiHeaders });
 
 export const jobApi = createApi({
@@ -20,27 +14,20 @@ export const jobApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getJobs: builder.query({
-      query: () =>
+      query: ({ searchJob, datePosted, remote }) =>
         createRequest(
           `search?query=${searchJob}&date_posted=${datePosted}&remote_jobs_only=${remote}`
         ),
     }),
 
     getJobDetails: builder.query({
-      query: () => createRequest(`job-details?job_id=${id}`),
+      query: (id) => createRequest(`job-details?job_id=${id}`),
     }),
 
     getJobSearchFilters: builder.query({
-      query: () =>
+      query: ({ query, datePosted, remote, requirements }) =>
         createRequest(
-          `search-filters?query=${searchJob}&date_posted=${datePosted}&remote_jobs_only={remote}`
-        ),
-    }),
-
-    getJobSalaryEstimate: builder.query({
-      query: () =>
-        createRequest(
-          `estimated-salary?job_title=${searchJob}&location=${jobLocation}`
+          `search?query=${query}&date_posted=${datePosted}&remote_jobs_only=${remote}&job_requirements=${requirements}`
         ),
     }),
   }),
@@ -49,6 +36,5 @@ export const jobApi = createApi({
 export const {
   useGetJobsQuery,
   useGetJobDetailsQuery,
-  useGetJobSalaryEstimateQuery,
-  useGetJobSearchFiltersQuery,
+  useLazyGetJobSearchFiltersQuery,
 } = jobApi;
