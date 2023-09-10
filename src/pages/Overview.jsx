@@ -12,7 +12,7 @@ const Overview = () => {
       remote: true,
     },
     {
-      pollingInterval: 3000000,
+      pollingInterval: 30000,
     }
   );
 
