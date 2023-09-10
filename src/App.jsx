@@ -2,8 +2,6 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 import {
-  // CompanyDetails,
-  // EstimatedSalaries,
   Overview,
   JobDetails,
   JobSearch,
@@ -35,18 +33,10 @@ const App = () => {
           path: "/jobsearch",
           element: <JobSearch />,
         },
-        // {
-        //   path: "/estimatedSalaries",
-        //   element: <EstimatedSalaries />,
-        // },
         {
           path: "/jobs/:id",
           element: <JobDetails />,
         },
-        // {
-        //   path: "/companies/:companyName",
-        //   element: <CompanyDetails />,
-        // },
         {
           path: "*",
           element: <Error />,
