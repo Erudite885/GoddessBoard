@@ -18,9 +18,7 @@ const JobDetails = () => {
       details?.job_required_experience.required_experience_in_months,
       "months"
     );
-
     const years = currentDate.diff(pastDate, "years");
-
     return years;
   };
 
@@ -70,6 +68,7 @@ const JobDetails = () => {
 
       <h2 className="font-bold mb-4 text-2xl">Description</h2>
       <p className="text-lg tracking-wide leading-loose">
+        {!details?.job_description && <span>No Job Description</span>}
         {details?.job_description}
       </p>
 
@@ -77,26 +76,34 @@ const JobDetails = () => {
         <div className=" w-1/2">
           <h2 className="font-bold my-4 text-xl">Qualifications</h2>
           <h2>
-            {details?.job_highlights.Qualifications.map((qualification, i) => (
-              <ul key={i}>
-                <li key={i} className="list-disc mb-2">
-                  {qualification}
-                </li>
-              </ul>
-            ))}
+            {!details?.job_highlights.Qualifications ? (
+              <p>No Qualification details</p>
+            ) : (
+              details?.job_highlights.Qualifications.map((qualification, i) => (
+                <ul key={i}>
+                  <li key={i} className="list-disc mb-2">
+                    {qualification}
+                  </li>
+                </ul>
+              ))
+            )}
           </h2>
         </div>
 
         <div>
           <h2 className="font-bold my-4 text-xl">Benefits</h2>
           <h2>
-            {details?.job_highlights.Benefits.map((benefit, i) => (
-              <ul key={i}>
-                <li key={i} className="list-disc mb-2">
-                  {benefit}
-                </li>
-              </ul>
-            ))}
+            {!details?.job_highlights.Benefits ? (
+              <p>No benefit details</p>
+            ) : (
+              details?.job_highlights.Benefits.map((benefit, i) => (
+                <ul key={i}>
+                  <li key={i} className="list-disc mb-2">
+                    {benefit}
+                  </li>
+                </ul>
+              ))
+            )}
           </h2>
         </div>
       </div>
@@ -119,54 +126,62 @@ const JobDetails = () => {
       <div className="flex gap-10 py-4">
         <div className="w-1/2 ">
           <h2 className="text-lg font-bold mb-4">Estimated Salaries</h2>
-          {details?.estimated_salaries.map((salaryEstimate) => (
-            <>
-              <p className="font-semibold">{salaryEstimate.publisher_name}</p>
-              <span className="text-sm">
-                {" "}
-                <b>currency:</b> {salaryEstimate.salary_currency}
-              </span>{" "}
-              /<span className="text-sm">{salaryEstimate.salary_period}</span>
-              <p className="font-semibold">
-                max salary: {salaryEstimate.max_salary.toLocaleString()}
-              </p>
-              <p className="font-semibold">
-                median salary: {salaryEstimate.median_salary.toLocaleString()}
-              </p>
-              <p className="font-semibold">
-                min salary: {salaryEstimate.min_salary.toLocaleString()}
-              </p>
-              <p className="font-semibold">
-                location: {salaryEstimate.location}{" "}
-              </p>
-              <button className="flex border border-[#ab0b0b] w-1/2 cursor-pointer rounded-2xl py-2 justify-center text-[#ab0b0b] my-4">
-                <Link to={`${salaryEstimate.publisher_link}`}>
+          {!details?.estimated_salaries ? (
+            <p>No Salary Estimates</p>
+          ) : (
+            details?.estimated_salaries.map((salaryEstimate) => (
+              <>
+                <p className="font-semibold">{salaryEstimate.publisher_name}</p>
+                <span className="text-sm">
                   {" "}
-                  View salary Estimate
-                </Link>
-              </button>
-            </>
-          ))}
+                  <b>currency:</b> {salaryEstimate.salary_currency}
+                </span>{" "}
+                /<span className="text-sm">{salaryEstimate.salary_period}</span>
+                <p className="font-semibold">
+                  max salary: {salaryEstimate.max_salary.toLocaleString()}
+                </p>
+                <p className="font-semibold">
+                  median salary: {salaryEstimate.median_salary.toLocaleString()}
+                </p>
+                <p className="font-semibold">
+                  min salary: {salaryEstimate.min_salary.toLocaleString()}
+                </p>
+                <p className="font-semibold">
+                  location: {salaryEstimate.location}{" "}
+                </p>
+                <button className="flex border border-[#ab0b0b] w-1/2 cursor-pointer rounded-2xl py-2 justify-center text-[#ab0b0b] my-4">
+                  <Link to={`${salaryEstimate.publisher_link}`}>
+                    {" "}
+                    View salary Estimate
+                  </Link>
+                </button>
+              </>
+            ))
+          )}
         </div>
 
         <div>
           <h2 className="text-lg mb-4 font-bold">Reviews</h2>
-          {details?.employer_reviews.map((review) => (
-            <>
-              <p>
-                <b>Review Publisher:</b>
-                {"  "} {review.publisher}
-              </p>
-              <b>Review Stars: </b>
-              {"  "}
-              <span>
-                {review.num_stars} / {review.max_score}
-              </span>
-              <button className="flex border border-[#ab0b0b] w-full cursor-pointer rounded-2xl py-2 justify-center text-[#ab0b0b] my-4">
-                <Link to={`${review.reviews_link}`}>Review Link</Link>
-              </button>
-            </>
-          ))}
+          {!details?.employer_reviews ? (
+            <p>No Reviews</p>
+          ) : (
+            details?.employer_reviews.map((review) => (
+              <>
+                <p>
+                  <b>Review Publisher:</b>
+                  {"  "} {review.publisher}
+                </p>
+                <b>Review Stars: </b>
+                {"  "}
+                <span>
+                  {review.num_stars} / {review.max_score}
+                </span>
+                <button className="flex border border-[#ab0b0b] w-full cursor-pointer rounded-2xl py-2 justify-center text-[#ab0b0b] my-4">
+                  <Link to={`${review.reviews_link}`}>Review Link</Link>
+                </button>
+              </>
+            ))
+          )}
         </div>
       </div>
 
