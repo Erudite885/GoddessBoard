@@ -44,11 +44,11 @@ const Overview = () => {
           <Link to="/jobsearch">Show More</Link>
         </button>
       </div>
-      <div className="flex flex-wrap justify-center items-center p-16">
+      <div className="flex flex-wrap gap-8 justify-center items-center p-16">
         {sortedJobs.map((job) => (
           <div
             key={job.job_id}
-            className="border rounded-xl w-[580px] py-4 px-2 mb-4 border-red-600 "
+            className="border rounded-xl w-[300px] md:w-[580px] py-4 px-2 mb-4 border-red-600 "
           >
             <div className="flex max-w-xs items-center mb-2 gap-2">
               <img
