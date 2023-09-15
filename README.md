@@ -1,6 +1,3 @@
-
-The idea is to give developers free access to millions of job postings and connect them with employers by accessing as much data as possible from the API and utilizing it in a modern web application.
-
 # Technologies
 
 React.js
